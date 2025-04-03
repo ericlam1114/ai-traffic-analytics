@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import NavBar from '../components/NavBar';
+import Image from 'next/image';
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -22,35 +23,128 @@ export default function Home() {
   const lightGrayStyle = { backgroundColor: '#F8F9FA' };
   
   return (
-    <main className="bg-white text-gray-900" style={whiteStyle}>
+    <main className="bg-white text-gray-900 overflow-hidden" style={whiteStyle}>
       <NavBar />
-      <div className="relative bg-white" style={whiteStyle}>
+      <div className="relative" style={whiteStyle}>
         {/* Hero section */}
-        <div className="relative bg-white pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8" style={whiteStyle}>
-          <div className="absolute inset-0" style={whiteStyle}>
-            <div className="bg-supabase-light-gray h-1/3 sm:h-2/3" style={lightGrayStyle} />
+        <div className="relative overflow-hidden" style={whiteStyle}>
+          {/* Decorative background elements */}
+          <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+            <div className="relative h-full text-lg max-w-prose mx-auto">
+              <svg className="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                <defs>
+                  <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" className="text-gray-200" fill="currentColor" />
+                  </pattern>
+                </defs>
+                <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+              </svg>
+              <svg className="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                <defs>
+                  <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" className="text-gray-200" fill="currentColor" />
+                  </pattern>
+                </defs>
+                <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+              </svg>
+            </div>
           </div>
-          <div className="relative max-w-7xl mx-auto" style={whiteStyle}>
-            <div className="text-center" style={whiteStyle}>
-              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl" style={darkTextStyle}>
-                <span className="block" style={darkTextStyle}>Track AI Traffic to</span>
-                <span className="block text-supabase-green">Your Website</span>
-              </h1>
-              <p className="mt-3 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl" style={darkTextStyle}>
-                See how AI platforms like ChatGPT, Perplexity, and Copilot are driving traffic to your site.
-                Understand when your content is being cited in AI responses.
-              </p>
-              <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-                <div className="rounded-md shadow">
-                  <Link href="/signup" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-supabase-green hover:bg-supabase-dark-green md:py-4 md:text-lg md:px-10">
-                    Get started
-                  </Link>
+          
+          <div className="relative pt-10 pb-20 lg:pt-20 lg:pb-28">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
+                {/* Left side - Text content */}
+                <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+                  <h1>
+                    <span className="mt-1 block text-4xl tracking-tight font-extrabold sm:text-5xl xl:text-6xl">
+                      <span className="block text-gray-900" style={darkTextStyle}>Track AI Traffic to</span>
+                      <span className="block text-supabase-green mt-1">Your Website</span>
+                    </span>
+                  </h1>
+                  <p className="mt-3 text-base text-gray-600 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    See how AI platforms like ChatGPT, Perplexity, and Copilot are driving traffic to your site.
+                    Understand when your content is being cited in AI responses.
+                  </p>
+                  
+                  {/* Testimonial/Social proof */}
+                  <div className="mt-8 border-t border-gray-200 pt-6">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex -space-x-1 relative z-0 overflow-hidden">
+                        <div className="relative h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-xs text-white">A</div>
+                        <div className="relative h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center text-xs text-white">B</div>
+                        <div className="relative h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center text-xs text-white">C</div>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        Trusted by 1,000+ websites
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                    <div className="rounded-md shadow">
+                      <Link href="/signup" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-supabase-green to-supabase-dark-green hover:from-supabase-dark-green hover:to-supabase-green md:py-4 md:text-lg md:px-10 transition-all duration-200">
+                        Get started for free
+                      </Link>
+                    </div>
+                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                      <Link href="/login" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 border-gray-200 md:py-4 md:text-lg md:px-10 transition-all duration-200">
+                        Sign in
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                  <Link href="/login" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 border-gray-200 md:py-4 md:text-lg md:px-10">
-                    Login
-                  </Link>
+                
+                {/* Right side - Hero image */}
+                <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                  <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                    <div className="relative block w-full bg-white rounded-lg overflow-hidden">
+                      <div className="w-full h-96 bg-gray-100 relative">
+                        {/* Replace with your actual hero image */}
+                        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+                          <div className="relative w-full h-full">
+                            <Image
+                              src="/dashboard-preview.png"
+                              alt="AI Traffic Analytics Dashboard Preview"
+                              layout="fill"
+                              objectFit="cover"
+                              className="w-full"
+                              priority
+                            />
+                            {/* Fallback if image doesn't exist yet */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-sm text-gray-500">Dashboard Preview</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 rounded-lg ring-1 ring-black ring-opacity-5"></div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Partner logos */}
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <p className="text-center text-base font-medium text-gray-500">
+              Tracking AI traffic from these platforms and more
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
+              <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                <div className="h-12 text-gray-400 flex items-center font-medium">ChatGPT</div>
+              </div>
+              <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                <div className="h-12 text-gray-400 flex items-center font-medium">Perplexity</div>
+              </div>
+              <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                <div className="h-12 text-gray-400 flex items-center font-medium">Copilot</div>
+              </div>
+              <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                <div className="h-12 text-gray-400 flex items-center font-medium">Claude</div>
+              </div>
+              <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                <div className="h-12 text-gray-400 flex items-center font-medium">Gemini</div>
               </div>
             </div>
           </div>
@@ -68,7 +162,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="relative mt-12 lg:mt-24 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+            <div className="relative mt-12 lg:mt-24 lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
               <div className="relative">
                 <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">
                   Simple Installation
@@ -80,7 +174,7 @@ export default function Home() {
                 <dl className="mt-10 space-y-10">
                   <div className="relative">
                     <dt>
-                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-supabase-green text-white">
+                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-supabase-green to-supabase-dark-green text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -94,7 +188,7 @@ export default function Home() {
 
                   <div className="relative">
                     <dt>
-                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-supabase-green text-white">
+                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-supabase-green to-supabase-dark-green text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
                         </svg>
@@ -108,7 +202,7 @@ export default function Home() {
 
                   <div className="relative">
                     <dt>
-                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-supabase-green text-white">
+                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-supabase-green to-supabase-dark-green text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                         </svg>
@@ -123,11 +217,11 @@ export default function Home() {
               </div>
 
               <div className="mt-10 -mx-4 relative lg:mt-0">
-                <div className="relative rounded-lg shadow-lg overflow-hidden">
+                <div className="relative rounded-xl shadow-xl overflow-hidden">
                   <div className="relative p-8 bg-supabase-light-gray sm:p-10">
                     <div className="text-gray-900 font-mono text-sm sm:text-base">
                       <div className="mb-4 text-lg font-semibold">Installation Code</div>
-                      <pre className="bg-white border border-gray-200 p-4 rounded-md overflow-x-auto">
+                      <pre className="bg-white border border-gray-200 p-4 rounded-md overflow-x-auto shadow-sm">
 {`<script 
   src="https://your-app.com/ai-traffic-tracker.js" 
   data-website-id="your-website-id">
@@ -156,8 +250,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-12 max-w-lg mx-auto grid gap-8 lg:grid-cols-3 lg:max-w-none">
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+            <div className="mt-12 max-w-lg mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:max-w-none">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -170,7 +264,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -183,7 +277,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -197,8 +291,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-8 grid gap-8 lg:grid-cols-3 lg:max-w-none max-w-lg mx-auto">
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+            <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:max-w-none max-w-lg mx-auto">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -211,7 +305,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -224,7 +318,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg">
+              <div className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <div className="block mt-2">
@@ -242,17 +336,27 @@ export default function Home() {
 
         {/* CTA section */}
         <div className="bg-white pt-16 pb-20" style={whiteStyle}>
-          <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8 bg-supabase-light-gray rounded-lg" style={lightGrayStyle}>
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl" style={darkTextStyle}>
-              <span className="block">Start tracking AI traffic today.</span>
-              <span className="block">Set up in just minutes.</span>
-            </h2>
-            <p className="mt-4 text-lg leading-6 text-gray-600" style={darkTextStyle}>
-              See which AI platforms are driving traffic to your site and optimize your content for better visibility.
-            </p>
-            <Link href="/signup" className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-supabase-green hover:bg-supabase-dark-green sm:w-auto">
-              Sign up for free
-            </Link>
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-gradient-to-r from-supabase-green to-supabase-dark-green rounded-xl shadow-xl overflow-hidden py-12 px-8 sm:px-12 lg:px-16">
+              <div className="relative lg:grid lg:grid-cols-2 lg:gap-8">
+                <div className="lg:col-span-1">
+                  <h2 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
+                    <span className="block">Start tracking AI traffic today.</span>
+                    <span className="block">Set up in just minutes.</span>
+                  </h2>
+                  <p className="mt-4 text-lg leading-6 text-white opacity-90">
+                    See which AI platforms are driving traffic to your site and optimize your content for better visibility.
+                  </p>
+                  <div className="mt-8">
+                    <div className="inline-flex rounded-md shadow">
+                      <Link href="/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-supabase-green bg-white hover:bg-gray-50 transition-colors duration-200">
+                        Sign up for free
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
