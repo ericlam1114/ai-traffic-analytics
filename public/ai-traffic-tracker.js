@@ -12,7 +12,7 @@
 // ai-traffic-tracker.js
 (function() {
   // Configuration
-  const TRACKING_ENDPOINT = 'https://parsleyanalytics.com/api/track';
+  const TRACKING_ENDPOINT = 'https://www.parsleyanalytics.com/api/track';
   
   // Get the website ID from the script tag
   const scriptTag = document.currentScript || (function() {
