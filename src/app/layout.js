@@ -3,7 +3,7 @@ import './globals.css';
 import './light-theme.css';
 
 export const metadata = {
-  title: 'AI Traffic Analytics',
+  title: 'Parsley | AI Traffic Analytics',
   description: 'Track and analyze traffic from AI platforms to your website',
 };
 
