@@ -86,7 +86,7 @@ export default function WebsiteDetail() {
     claude: "rgba(255, 149, 0, 0.7)",
     bard: "rgba(234, 67, 53, 0.7)",
     gemini: "rgba(66, 133, 244, 0.7)",
-    "unknown-ai": "rgba(128, 128, 128, 0.7)",
+    "unknown-ai": "rgba(135, 206, 250, 0.7)", // Light blue for unknown
   };
 
   // Prepare chart data

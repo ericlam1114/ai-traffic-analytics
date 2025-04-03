@@ -139,7 +139,7 @@ export default function Dashboard() {
     gptbot: "rgba(16, 163, 127, 0.5)", // GPTBot
     "claude-crawler": "rgba(255, 149, 0, 0.5)", // Claude crawler
     "google-ai": "rgba(234, 67, 53, 0.5)", // Google crawler
-    "unknown-ai": "rgba(128, 128, 128, 0.7)", // Gray for unknown
+    "unknown-ai": "rgba(135, 206, 250, 0.7)", // Light blue for unknown
   };
 
   // Prepare chart data
