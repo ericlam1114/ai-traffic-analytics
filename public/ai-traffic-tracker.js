@@ -55,7 +55,7 @@ function detectAISource() {
     type = 'referral';
   } else if (referrer && referrer !== '') {
     // Check for potential AI user agents or other indicators
-    source = 'unknown-ai';
+    source = 'google-ai-experimental';
     type = 'referral';
   }
   
