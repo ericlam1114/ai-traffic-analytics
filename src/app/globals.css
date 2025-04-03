@@ -3,25 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 17, 24, 39;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 249, 250, 251;
+  --accent-rgb: 63, 207, 142;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Force Light Theme - Override Anything Else */
+html {
+  background-color: white !important;
 }
 
 body {
+  color: rgb(var(--foreground-rgb)) !important;
+  background: rgb(var(--background-start-rgb)) !important;
+}
+
+html, body, #__next, main, div, section, header, footer, nav {
+  background-color: rgb(var(--background-start-rgb)) !important;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+/* Override dark sections */
+.bg-black, 
+.bg-gray-900, 
+.bg-supabase-dark, 
+[class*="bg-black"], 
+[class*="bg-gray-900"],
+[class*="bg-dark"],
+[style*="background-color: rgb(0, 0, 0)"],
+[style*="background-color: black"],
+[style*="background-color: #000"],
+[style*="background: rgb(0, 0, 0)"],
+[style*="background: black"],
+[style*="background: #000"] {
+  background-color: white !important;
+  color: rgb(var(--foreground-rgb)) !important;
+}
+
+/* Style for text that was on dark backgrounds */
+[class*="text-white"] {
+  color: rgb(var(--foreground-rgb)) !important;
+}
+
+.accent-text {
+  color: rgb(var(--accent-rgb));
+}
+
+.accent-bg {
+  background-color: rgb(var(--accent-rgb));
+}
+
+.accent-border {
+  border-color: rgb(var(--accent-rgb));
 }

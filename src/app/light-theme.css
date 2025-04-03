@@ -1,0 +1,35 @@
+/* Force Light Theme - Critical CSS Overrides */
+html,
+body,
+#__next,
+main,
+div,
+section,
+header,
+nav,
+footer {
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+/* Target every element with a black background */
+*[class*="bg-black"],
+*[class*="bg-gray-900"],
+*[class*="bg-dark"],
+*[style*="background: black"],
+*[style*="background: #000"],
+*[style*="background-color: black"],
+*[style*="background-color: #000"] {
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+/* Target specific components */
+.bg-supabase-green {
+  background-color: #3FCF8E !important;
+}
+
+/* Fix text colors that would be on dark backgrounds */
+*[class*="text-white"] {
+  color: #1f2937 !important;
+} 
