@@ -81,8 +81,3 @@ export async function POST(request) {
     );
   }
 }
-
-// Optional: Add a route for tracking exit clicks
-export async function POST(request) {
-  // Similar implementation as above, but for exit link tracking
-}
