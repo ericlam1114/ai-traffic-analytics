@@ -1,25 +1,116 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/firebase';
 import Link from 'next/link';
 import NavBar from '@/components/NavBar';
+
+// Utility function to sanitize inputs
+const sanitizeInput = (input) => {
+  if (typeof input !== 'string') return '';
+  
+  // Remove HTML tags and scripts
+  const sanitized = input
+    .replace(/<[^>]*>/g, '')
+    .replace(/javascript:/gi, '')
+    .trim();
+    
+  return sanitized;
+};
+
+// Validate email format
+const isValidEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: '',
+  });
   const router = useRouter();
   const { login } = useAuth();
+
+  const validateForm = () => {
+    const errors = {
+      email: '',
+      password: '',
+    };
+    
+    // Validate email
+    if (!email) {
+      errors.email = 'Email is required';
+    } else if (!isValidEmail(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    // Validate password
+    if (!password) {
+      errors.password = 'Password is required';
+    } else if (password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
+    }
+    
+    setValidationErrors(errors);
+    
+    // Return true if there are no errors
+    return !errors.email && !errors.password;
+  };
+
+  const handleEmailChange = (e) => {
+    const sanitized = sanitizeInput(e.target.value);
+    setEmail(sanitized);
+    
+    // Clear validation error when user types
+    if (validationErrors.email) {
+      setValidationErrors({
+        ...validationErrors,
+        email: '',
+      });
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const sanitized = sanitizeInput(e.target.value);
+    setPassword(sanitized);
+    
+    // Clear validation error when user types
+    if (validationErrors.password) {
+      setValidationErrors({
+        ...validationErrors,
+        password: '',
+      });
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      return;
+    }
+    
     setLoading(true);
     
     try {
+      // Rate limiting check (could be enhanced with proper backend implementation)
+      const lastAttemptTime = sessionStorage.getItem('lastLoginAttempt');
+      const now = Date.now();
+      
+      if (lastAttemptTime && now - parseInt(lastAttemptTime) < 1000) {
+        throw new Error('Too many login attempts. Please try again in a moment.');
+      }
+      
+      sessionStorage.setItem('lastLoginAttempt', now.toString());
+      
       await login(email, password);
       router.push('/dashboard');
     } catch (error) {
@@ -72,10 +163,14 @@ export default function Login() {
                     autoComplete="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm"
+                    onChange={handleEmailChange}
+                    maxLength={100}
+                    className={`appearance-none block w-full px-3 py-2.5 border ${validationErrors.email ? 'border-red-300' : 'border-gray-300'} rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm`}
                     placeholder="you@example.com"
                   />
+                  {validationErrors.email && (
+                    <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                  )}
                 </div>
               </div>
 
@@ -91,10 +186,14 @@ export default function Login() {
                     autoComplete="current-password"
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm"
+                    onChange={handlePasswordChange}
+                    maxLength={100}
+                    className={`appearance-none block w-full px-3 py-2.5 border ${validationErrors.password ? 'border-red-300' : 'border-gray-300'} rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm`}
                     placeholder="Enter your password"
                   />
+                  {validationErrors.password && (
+                    <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                  )}
                 </div>
                 <div className="flex items-center justify-end mt-2">
                   <Link href="/forgot-password" className="text-sm font-medium text-supabase-green hover:text-supabase-green transition-colors duration-200">
