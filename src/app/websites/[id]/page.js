@@ -251,7 +251,7 @@ export default function RootLayout({ children }) {
           src="https://www.parsleyanalytics.com/ai-traffic-tracker.js" 
           data-website-id="${website.id}" 
           strategy="afterInteractive"
-        />
+        ></script>
       </head>
       <body>{children}</body>
     </html>
