@@ -28,35 +28,39 @@
   }
   
   // Function to detect AI sources
-  function detectAISource() {
-    const referrer = document.referrer;
-    let source = 'unknown';
-    let type = 'direct';
-    
-    // Check referrer for known AI platforms
-    if (referrer.includes('chat.openai.com') || referrer.includes('chatgpt')) {
-      source = 'chatgpt';
-      type = 'referral';
-    } else if (referrer.includes('perplexity.ai')) {
-      source = 'perplexity';
-      type = 'referral';
-    } else if (referrer.includes('claude.ai')) {
-      source = 'claude';
-      type = 'referral';
-    } else if (referrer.includes('copilot') || referrer.includes('bing.com/chat')) {
-      source = 'copilot';
-      type = 'referral';
-    } else if (referrer.includes('bard.google.com') || referrer.includes('gemini')) {
-      source = 'gemini';
-      type = 'referral';
-    } else if (referrer && referrer !== '') {
-      // Check for potential AI user agents or other indicators
-      source = 'unknown-ai';
-      type = 'referral';
-    }
-    
-    return { source, type };
+  // Function to detect AI sources
+function detectAISource() {
+  const referrer = document.referrer;
+  let source = 'unknown';
+  let type = 'direct';
+  
+  // Check referrer for known AI platforms
+  if (referrer.includes('chat.openai.com') || referrer.includes('chatgpt')) {
+    source = 'chatgpt';
+    type = 'referral';
+  } else if (referrer.includes('perplexity.ai')) {
+    source = 'perplexity';
+    type = 'referral';
+  } else if (referrer.includes('claude.ai')) {
+    source = 'claude';
+    type = 'referral';
+  } else if (referrer.includes('copilot') || referrer.includes('bing.com/chat')) {
+    source = 'copilot';
+    type = 'referral';
+  } else if (referrer.includes('bard.google.com') || referrer.includes('gemini')) {
+    source = 'gemini';
+    type = 'referral';
+  } else if (referrer.includes('google.com') && (referrer.includes('AI+Mode') || referrer.includes('udm=') || referrer.includes('ai'))) {
+    source = 'google-ai-mode';
+    type = 'referral';
+  } else if (referrer && referrer !== '') {
+    // Check for potential AI user agents or other indicators
+    source = 'unknown-ai';
+    type = 'referral';
   }
+  
+  return { source, type };
+}
   
   // Gather tracking data
   function collectTrackingData() {
