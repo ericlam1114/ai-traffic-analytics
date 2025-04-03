@@ -1,13 +1,30 @@
-import { recordAITraffic, getWebsiteById } from '@/lib/supabase';
+// src/app/api/track/route.js
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { websiteId, source, pagePath, referrer, userAgent } = body;
+    const { 
+      websiteId, 
+      source, 
+      type, 
+      pagePath, 
+      referrer, 
+      userAgent, 
+      language, 
+      screenWidth, 
+      screenHeight,
+      timestamp 
+    } = body;
     
     // Validate required fields
-    if (!websiteId || !source || !pagePath) {
+    if (!websiteId || !pagePath) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -15,7 +32,11 @@ export async function POST(request) {
     }
     
     // Check if the website exists
-    const { data: website, error: websiteError } = await getWebsiteById(websiteId);
+    const { data: website, error: websiteError } = await supabase
+      .from('websites')
+      .select('*')
+      .eq('id', websiteId)
+      .single();
     
     if (websiteError || !website) {
       return NextResponse.json(
@@ -24,8 +45,23 @@ export async function POST(request) {
       );
     }
     
-    // Record the traffic data
-    const { error } = await recordAITraffic(websiteId, source, pagePath, referrer, userAgent);
+    // Record the traffic data with enhanced fields
+    const { error } = await supabase
+      .from('ai_traffic')
+      .insert([
+        {
+          website_id: websiteId,
+          source: source || 'unknown',
+          visit_type: type || 'referral',
+          page_path: pagePath,
+          referrer: referrer || '',
+          user_agent: userAgent || '',
+          language: language || '',
+          screen_width: screenWidth || null,
+          screen_height: screenHeight || null,
+          timestamp: timestamp || new Date().toISOString()
+        }
+      ]);
     
     if (error) {
       console.error('Error recording traffic:', error);
@@ -44,4 +80,9 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+// Optional: Add a route for tracking exit clicks
+export async function POST(request) {
+  // Similar implementation as above, but for exit link tracking
 }

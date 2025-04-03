@@ -59,7 +59,7 @@ export default function Websites() {
               <button
                 type="button"
                 onClick={handleAddWebsite}
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-supabase-green hover:bg-supabase-green/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Add Website
               </button>
@@ -139,7 +139,7 @@ export default function Websites() {
                               {new Date(website.created_at).toLocaleDateString()}
                             </td>
                             <td className="relative whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8">
-                              <Link href={`/websites/${website.id}`} className="text-indigo-600 hover:text-indigo-900">
+                              <Link href={`/websites/${website.id}`} className="text-supabase-green hover:text-supabase-green/80">
                                 View
                               </Link>
                             </td>
