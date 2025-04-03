@@ -175,7 +175,7 @@ export default function WebsiteDetail() {
                       <dd className="mt-1 text-sm text-gray-900">
                         <div className="relative bg-gray-50 p-4 rounded-md border border-gray-200">
                           <div className="font-mono text-sm overflow-x-auto whitespace-nowrap">
-                            {`<script src="https://your-domain.com/ai-traffic-tracker.js" data-website-id="${website.id}"></script>`}
+                            {`<script src="https://parsleyanalytics.com/ai-traffic-tracker.js" data-website-id="${website.id}"></script>`}
                           </div>
                           <div className="absolute top-3 right-3 flex items-center">
                             <button
