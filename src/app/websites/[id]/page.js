@@ -179,7 +179,7 @@ export default function WebsiteDetail() {
                           </div>
                           <div className="absolute top-3 right-3 flex items-center">
                             <button
-                              onClick={() => copyToClipboard(`<script src="https://your-domain.com/ai-traffic-tracker.js" data-website-id="${website.id}"></script>`)}
+                              onClick={() => copyToClipboard(`<script src="https://parsleyanalytics.com/ai-traffic-tracker.js" data-website-id="${website.id}"></script>`)}
                               className="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                             >
                               {copied ? "Copied" : "Copy to clipboard"}
