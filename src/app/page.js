@@ -139,7 +139,7 @@ export default function Home() {
         </div>
 
         {/* Feature section */}
-        <div className="py-16 bg-white overflow-hidden lg:py-24" style={whiteStyle}>
+        <div className="py-16 bg-white overflow-hidden lg:py-2" style={whiteStyle}>
           <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
             <div className="relative">
               <h2 className="text-center text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">

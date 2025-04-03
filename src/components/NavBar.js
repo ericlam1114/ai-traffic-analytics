@@ -194,7 +194,7 @@ export default function NavBar({
                     </Link>
                     <Link
                       href="/signup"
-                      className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+                      className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-supabase-green  hover:bg-supabase-green"
                     >
                       Sign up
                     </Link>
