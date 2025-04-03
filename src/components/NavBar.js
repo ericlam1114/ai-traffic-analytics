@@ -84,7 +84,7 @@ export default function NavBar({
                 <div className="flex-shrink-0 flex items-center">
                   <Link href="/" className="flex items-center">
                     <Image
-                      src="/parsely.png"
+                      src="/parsleyanalytics.png"
                       alt="Parsley Analytics Logo"
                       width={150}
                       height={150}
