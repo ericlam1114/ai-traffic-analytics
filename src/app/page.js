@@ -331,31 +331,23 @@ export default function Home() {
        
 
         {/* CTA section */}
-        <div className="bg-white pt-16 pb-20" style={whiteStyle}>
+        <div className=" py-16" style={whiteStyle}>
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-supabase-green to-supabase-dark-green rounded-xl shadow-xl overflow-hidden py-12 px-8 sm:px-12 lg:px-16">
-              <div className="relative lg:grid lg:grid-cols-2 lg:gap-8">
-                <div className="lg:col-span-1">
-                  <h2 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
-                    <span className="block">
-                      Start tracking AI traffic today.
-                    </span>
-                    <span className="block">Set up in just minutes.</span>
-                  </h2>
-                  <p className="mt-4 text-lg leading-6 text-white opacity-90">
-                    See which AI platforms are driving traffic to your site and
-                    optimize your content for better visibility.
-                  </p>
-                  <div className="mt-8">
-                    <div className="inline-flex rounded-md shadow">
-                      <Link
-                        href="/signup"
-                        className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-supabase-green bg-white hover:bg-gray-50 transition-colors duration-200"
-                      >
-                        Sign up for free
-                      </Link>
-                    </div>
-                  </div>
+            <div className="bg-supabase-green rounded-xl shadow-xl overflow-hidden py-12 px-8 sm:px-12 lg:px-16">
+              <div className="text-center bg-supabase-green">
+                <h2 className="text-3xl  font-bold text-white tracking-tight sm:text-4xl">
+                  Start tracking AI traffic today
+                </h2>
+                <p className="mt-4 text-lg text-white text-opacity-90 max-w-2xl mx-auto">
+                  See which AI platforms are driving traffic to your site and optimize your content for better visibility.
+                </p>
+                <div className="mt-8 bg-supabase-green">
+                  <Link
+                    href="/signup"
+                    className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-supabase-green bg-white hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    Get started for free
+                  </Link>
                 </div>
               </div>
             </div>
