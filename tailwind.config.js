@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '375px', // iPhone SE screen width
+      },
       colors: {
         'supabase-green': '#3FCF8E',
         'supabase-dark-green': '#2EB37A',

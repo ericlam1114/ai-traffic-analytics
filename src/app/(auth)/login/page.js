@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-green-50 to-white">
       <NavBar />
-      <div className="flex-1 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <div className="flex-1 flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative">
         {/* Background decorative elements */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-24 -right-24 w-96 h-96 bg-green-100 rounded-full opacity-50 blur-3xl"></div>
@@ -42,7 +42,7 @@ export default function Login() {
         
         <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+            <h2 className="text-2xl xs:text-3xl font-extrabold text-gray-900 tracking-tight">
               Welcome Back
             </h2>
             <p className="mt-2 text-sm text-gray-600 max-w">
@@ -51,8 +51,8 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
-          <div className="bg-white py-8 px-4 shadow-2xl sm:rounded-xl sm:px-10 border border-gray-100">
+        <div className="mt-6 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
+          <div className="bg-white py-6 sm:py-8 px-4 shadow-2xl sm:rounded-xl sm:px-10 border border-gray-100">
             <form className="space-y-6" onSubmit={handleLogin}>
               {error && (
                 <div className="rounded-lg bg-red-50 p-4 border border-red-100">
