@@ -211,7 +211,7 @@ export default function Home() {
                       <div className="mb-4 text-lg font-semibold">Installation Code</div>
                       <pre className="bg-white border border-gray-200 p-4 rounded-md overflow-x-auto shadow-sm">
 {`<script 
-  src="https://your-app.com/ai-traffic-tracker.js" 
+  src="https://parsleyanalytics.com/ai-traffic-tracker.js" 
   data-website-id="your-website-id">
 </script>`}
                       </pre>

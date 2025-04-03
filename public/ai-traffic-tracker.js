@@ -5,7 +5,7 @@
  * It includes enhanced detection for AI crawlers and more detailed analytics.
  * 
  * Usage:
- * <script src="https://your-app-domain.com/ai-traffic-tracker.js" 
+ * <script src="https://parsleyanalytics.com/ai-traffic-tracker.js" 
  *         data-website-id="your-website-id"></script>
  */
 
