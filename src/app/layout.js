@@ -7,11 +7,32 @@ export const metadata = {
   description: 'Track and analyze traffic from AI platforms to your website',
   metadataBase: new URL('https://www.parsley.ai'),
   openGraph: {
-    images: 'https://i.imgur.com/tVdstfD.png',
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://www.parsley.ai',
+    siteName: 'Parsley Analytics',
+    title: 'Parsley | AI Traffic Analytics',
+    description: 'Track and analyze traffic from AI platforms to your website',
+    images: [
+      {
+        url: 'https://i.imgur.com/CoTyX6K.png',
+        width: 1200,
+        height: 630,
+        alt: 'Parsley Analytics'
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    images: 'https://i.imgur.com/tVdstfD.png',
+    site: '@parsleyanalytics',
+    title: 'Parsley | AI Traffic Analytics',
+    description: 'Track and analyze traffic from AI platforms to your website',
+    images: [
+      {
+        url: 'https://i.imgur.com/CoTyX6K.png',
+        alt: 'Parsley Analytics'
+      }
+    ],
   },
 };
 
