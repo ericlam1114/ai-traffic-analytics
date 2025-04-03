@@ -5,6 +5,7 @@ import './light-theme.css';
 export const metadata = {
   title: 'Parsley | AI Traffic Analytics',
   description: 'Track and analyze traffic from AI platforms to your website',
+  metadataBase: new URL('https://www.parsley.ai'),
   openGraph: {
     images: 'https://i.imgur.com/tVdstfD.png',
   },
