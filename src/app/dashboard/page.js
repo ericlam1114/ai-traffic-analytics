@@ -51,38 +51,19 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("overview");
-
-  // Fetch websites when component mounts
-  useEffect(() => {
-    if (user) {
-      fetchWebsites();
-    }
-  }, [user]);
+  const [isWebsitesLoaded, setIsWebsitesLoaded] = useState(false);
+  
+  // Filter states
+  const [sourceFilter, setSourceFilter] = useState("");
+  const [pageFilter, setPageFilter] = useState("");
 
   // Fetch traffic data when selected website or time range changes
   useEffect(() => {
     if (selectedWebsite) {
       fetchAllData();
+      setIsWebsitesLoaded(true);
     }
   }, [selectedWebsite, timeRange]);
-
-  const fetchWebsites = async () => {
-    try {
-      const { data, error } = await getUserWebsites(user.uid);
-      if (error) throw error;
-
-      setWebsites(data || []);
-      if (data && data.length > 0) {
-        setSelectedWebsite(data[0].id);
-      } else {
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching websites:", error);
-      setError("Failed to load websites");
-      setLoading(false);
-    }
-  };
 
   const fetchAllData = async () => {
     setLoading(true);
@@ -140,16 +121,51 @@ export default function Dashboard() {
     "claude-crawler": "rgba(255, 149, 0, 0.5)", // Claude crawler
     "google-ai": "rgba(234, 67, 53, 0.5)", // Google crawler
     "unknown-ai": "rgba(135, 206, 250, 0.7)", // Light blue for unknown
+    "google-ai-experimental": "rgba(255, 165, 0, 0.7)", // Google AI experimental
+    "stealth-ai": "rgba(255, 255, 255)", // Light blue for unknown
   };
+
+  // Apply filters to data
+  const getFilteredData = () => {
+    if (!trafficData) return { bySource: [], recentVisits: [] };
+    
+    let filteredSources = trafficData.bySource;
+    let filteredVisits = trafficData.recentVisits;
+    
+    if (sourceFilter) {
+      const lowerFilter = sourceFilter.toLowerCase();
+      filteredSources = filteredSources.filter(item => 
+        item.source.toLowerCase().includes(lowerFilter)
+      );
+      filteredVisits = filteredVisits.filter(visit => 
+        visit.source.toLowerCase().includes(lowerFilter)
+      );
+    }
+    
+    if (pageFilter) {
+      const lowerFilter = pageFilter.toLowerCase();
+      filteredVisits = filteredVisits.filter(visit => 
+        visit.page.toLowerCase().includes(lowerFilter)
+      );
+    }
+    
+    return {
+      totalVisits: trafficData.totalVisits,
+      bySource: filteredSources,
+      recentVisits: filteredVisits
+    };
+  };
+  
+  const filteredData = getFilteredData();
 
   // Prepare chart data
   const sourceChartData = {
-    labels: trafficData?.bySource.map((item) => item.source) || [],
+    labels: filteredData.bySource.map((item) => item.source) || [],
     datasets: [
       {
-        data: trafficData?.bySource.map((item) => item.count) || [],
+        data: filteredData.bySource.map((item) => item.count) || [],
         backgroundColor:
-          trafficData?.bySource.map(
+          filteredData.bySource.map(
             (item) => sourceColors[item.source] || "rgba(128, 128, 128, 0.7)"
           ) || [],
         borderColor: "rgba(255, 255, 255, 0.7)",
@@ -158,24 +174,14 @@ export default function Dashboard() {
     ],
   };
 
-  // Prepare trend chart data
-  const trendChartData = {
-    labels: trendData?.map((item) => item.date) || [],
-    datasets: [
-      {
-        label: "AI Traffic",
-        data: trendData?.map((item) => item.count) || [],
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-        tension: 0.1,
-      },
-    ],
-  };
-
-  // Prepare top pages chart data
+  // Prepare top pages chart data with filters applied
+  const filteredPages = pageFilter 
+    ? topPages.filter(page => page.page_path.toLowerCase().includes(pageFilter.toLowerCase()))
+    : topPages;
+    
   const pagesChartData = {
     labels:
-      topPages?.map((item) =>
+      filteredPages.map((item) =>
         item.page_path.length > 20
           ? item.page_path.substring(0, 20) + "..."
           : item.page_path
@@ -183,17 +189,57 @@ export default function Dashboard() {
     datasets: [
       {
         label: "Page Views",
-        data: topPages?.map((item) => item.count) || [],
+        data: filteredPages.map((item) => item.count) || [],
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
+  };
+
+  const renderFilters = () => {
+    if (activeTab === "overview") return null;
+    
+    return (
+      <div className="p-4 border-b border-gray-200">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {activeTab === "sources" && (
+            <div className="w-full sm:w-1/2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Filter by Source
+              </label>
+              <input
+                type="text"
+                placeholder="e.g., chatgpt, claude"
+                className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm rounded-md"
+                value={sourceFilter}
+                onChange={(e) => setSourceFilter(e.target.value)}
+              />
+            </div>
+          )}
+          
+          {activeTab === "pages" && (
+            <div className="w-full sm:w-1/2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Filter by Page Path
+              </label>
+              <input
+                type="text"
+                placeholder="e.g., /blog, /products"
+                className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm rounded-md"
+                value={pageFilter}
+                onChange={(e) => setPageFilter(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const renderTabs = () => {
     return (
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-          {["overview", "sources", "pages", "trends"].map((tab) => (
+          {["overview", "sources", "pages"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -337,7 +383,7 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {trafficData.recentVisits.map((visit, index) => (
+                    {filteredData.recentVisits.map((visit, index) => (
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm capitalize">
                           <span
@@ -376,6 +422,11 @@ export default function Dashboard() {
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Traffic by AI Source
+                  {sourceFilter && (
+                    <span className="text-sm font-normal ml-2 text-gray-500">
+                      Filtered: {sourceFilter}
+                    </span>
+                  )}
                 </h3>
                 <div className="h-80">
                   <Doughnut
@@ -411,13 +462,9 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {trafficData.bySource.map((source, index) => (
+                    {filteredData.bySource.map((source, index) => (
                       <tr key={index}>
-                        <td
-                          className="px-6 py-4 whitespace-
-                        // Continuing from where we left off in the dashboard component
-                        nowrap text-sm capitalize"
-                        >
+                        <td className="px-6 py-4 whitespace-nowrap text-sm capitalize">
                           <span
                             className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                             style={{
@@ -456,6 +503,11 @@ export default function Dashboard() {
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   Top Pages Visited by AI
+                  {pageFilter && (
+                    <span className="text-sm font-normal ml-2 text-gray-500">
+                      Filtered: {pageFilter}
+                    </span>
+                  )}
                 </h3>
                 <div className="h-80">
                   <Bar
@@ -493,7 +545,7 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {topPages.map((page, index) => (
+                    {filteredPages.map((page, index) => (
                       <tr key={index}>
                         <td className="px-6 py-4 text-sm text-gray-900">
                           {page.page_path}
@@ -518,99 +570,6 @@ export default function Dashboard() {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        );
-      case "trends":
-        return (
-          <div className="p-6">
-            <div className="grid grid-cols-1 gap-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  AI Traffic Trends
-                </h3>
-                <div className="h-80">
-                  <Line
-                    data={trendChartData}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins: {
-                        tooltip: {
-                          mode: "index",
-                          intersect: false,
-                        },
-                      },
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="bg-white p-4 shadow rounded-lg">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Traffic Insights
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-700">Growth Rate</h4>
-                    <p className="text-2xl font-bold mt-2">
-                      {trendData && trendData.length > 1
-                        ? (() => {
-                            const first = trendData[0].count;
-                            const last = trendData[trendData.length - 1].count;
-                            const growth =
-                              first > 0 ? ((last - first) / first) * 100 : 0;
-                            return `${growth > 0 ? "+" : ""}${Math.round(
-                              growth
-                            )}%`;
-                          })()
-                        : "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Since beginning of period
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-700">Peak Day</h4>
-                    <p className="text-2xl font-bold mt-2">
-                      {trendData && trendData.length > 0
-                        ? (() => {
-                            const max = trendData.reduce((prev, current) =>
-                              prev.count > current.count ? prev : current
-                            );
-                            return max.date;
-                          })()
-                        : "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {trendData && trendData.length > 0
-                        ? (() => {
-                            const max = trendData.reduce((prev, current) =>
-                              prev.count > current.count ? prev : current
-                            );
-                            return `${max.count} visits`;
-                          })()
-                        : ""}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-700">Average Daily</h4>
-                    <p className="text-2xl font-bold mt-2">
-                      {trendData && trendData.length > 0
-                        ? Math.round(
-                            trendData.reduce((sum, day) => sum + day.count, 0) /
-                              trendData.length
-                          )
-                        : "N/A"}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">Visits per day</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -640,7 +599,15 @@ export default function Dashboard() {
 
   return (
     <AuthGuard>
-      <NavBar />
+      <NavBar
+        selectedWebsite={selectedWebsite}
+        setSelectedWebsite={setSelectedWebsite}
+        timeRange={timeRange}
+        setTimeRange={setTimeRange}
+        websites={websites}
+        setWebsites={setWebsites}
+        isWebsitesLoaded={isWebsitesLoaded}
+      />
       <main className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center">
@@ -674,37 +641,17 @@ export default function Dashboard() {
           ) : (
             <div className="mt-4">
               <div className="bg-white shadow rounded-lg overflow-hidden">
-                <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between sm:space-x-4">
-                  <div className="flex-1">
-                    <label
-                      htmlFor="website-select"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Select Website
-                    </label>
-                    <select
-                      id="website-select"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm rounded-md"
-                      value={selectedWebsite || ""}
-                      onChange={(e) => setSelectedWebsite(e.target.value)}
-                    >
-                      {websites.map((site) => (
-                        <option key={site.id} value={site.id}>
-                          {site.name || site.domain}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mt-3 sm:mt-0">
+                <div className="p-4 flex justify-end">
+                  <div className="w-48">
                     <label
                       htmlFor="time-range"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Time Range
                     </label>
                     <select
                       id="time-range"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm rounded-md"
+                      className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-supabase-green focus:border-supabase-green sm:text-sm rounded-md"
                       value={timeRange}
                       onChange={(e) => setTimeRange(e.target.value)}
                     >
@@ -716,8 +663,8 @@ export default function Dashboard() {
                     </select>
                   </div>
                 </div>
-
                 {renderTabs()}
+                {renderFilters()}
                 {renderTabContent()}
               </div>
             </div>

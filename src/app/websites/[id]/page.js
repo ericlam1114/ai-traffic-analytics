@@ -87,6 +87,9 @@ export default function WebsiteDetail() {
     bard: "rgba(234, 67, 53, 0.7)",
     gemini: "rgba(66, 133, 244, 0.7)",
     "unknown-ai": "rgba(135, 206, 250, 0.7)", // Light blue for unknown
+    "stealth-ai": "rgba(255, 255, 255)", // Light blue for unknown
+    "google-ai-experimental": "rgba(255, 165, 0, 0.7)", // Google AI experimental
+    
   };
 
   // Prepare chart data

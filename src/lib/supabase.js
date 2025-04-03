@@ -57,7 +57,7 @@ export async function recordAITraffic(
     .insert([
       {
         website_id: websiteId,
-        source: source || 'unknown',
+        source: source || 'stealth ai',
         visit_type: visitType || 'referral',
         page_path: pagePath,
         referrer,
@@ -225,8 +225,8 @@ export async function getTopPages(websiteId, timeRange = '7d') {
   const pageMainSource = {};
   Object.entries(pageSourceCounts).forEach(([page, sources]) => {
     let maxCount = 0;
-    let mainSource = 'unknown';
-    
+    let mainSource = 'stealth ai';
+
     Object.entries(sources).forEach(([source, count]) => {
       if (count > maxCount) {
         maxCount = count;

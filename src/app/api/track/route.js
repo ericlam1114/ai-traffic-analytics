@@ -77,7 +77,7 @@ async function handlePost(request) {
       .insert([
         {
           website_id: websiteId,
-          source: source || 'unknown',
+          source: source || 'stealth ai',
           visit_type: type || 'referral',
           page_path: pagePath,
           referrer: referrer || '',

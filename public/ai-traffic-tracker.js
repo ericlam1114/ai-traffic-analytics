@@ -31,7 +31,7 @@
   // Function to detect AI sources
 function detectAISource() {
   const referrer = document.referrer;
-  let source = 'unknown';
+  let source = 'stealth ai';
   let type = 'direct';
   
   // Check referrer for known AI platforms
