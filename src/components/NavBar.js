@@ -2,6 +2,7 @@
 
 import { useAuth } from '../lib/firebase';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
@@ -28,8 +29,16 @@ export default function NavBar() {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
-                  <Link href="/" className="text-xl font-bold text-supabase-green">
-                    AI Traffic Analytics
+                  <Link href="/" className="flex items-center">
+                    <Image
+                      src="/parsely.png"
+                      alt="Parsley Analytics Logo"
+                      width={150}
+                      height={150}
+                      className="mr-2 filter-to-supabase-green"
+                      style={{ filter: 'brightness(0) saturate(100%) invert(42%) sepia(68%) saturate(3619%) hue-rotate(146deg) brightness(95%) contrast(101%)' }}
+                    />
+                    {/* <span className="text-xl font-bold text-supabase-green">Parsley Analytics</span> */}
                   </Link>
                 </div>
                 {user && (
@@ -96,7 +105,7 @@ export default function NavBar() {
                   <div className="flex space-x-4">
                     <Link
                       href="/login"
-                      className="text-sm font-medium text-gray-500 hover:text-gray-900"
+                      className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900"
                     >
                       Sign in
                     </Link>

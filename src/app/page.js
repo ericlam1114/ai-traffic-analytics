@@ -67,7 +67,7 @@ export default function Home() {
                   </p>
                   
                   {/* Testimonial/Social proof */}
-                  <div className="mt-8 border-t border-gray-200 pt-6">
+                  {/* <div className="mt-8 border-t border-gray-200 pt-6">
                     <div className="flex items-center space-x-2">
                       <div className="flex -space-x-1 relative z-0 overflow-hidden">
                         <div className="relative h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-xs text-white">A</div>
@@ -78,46 +78,34 @@ export default function Home() {
                         Trusted by 1,000+ websites
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   
                   <div className="mt-6 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                     <div className="rounded-md shadow">
-                      <Link href="/signup" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-supabase-green to-supabase-dark-green hover:from-supabase-dark-green hover:to-supabase-green md:py-4 md:text-lg md:px-10 transition-all duration-200">
+                      <Link href="/signup" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-supabase-green to-supabase-green hover:from-supabase-dark-green hover:to-supabase-green md:py-4 md:text-lg md:px-10 transition-all duration-200">
                         Get started for free
                       </Link>
                     </div>
-                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                    {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                       <Link href="/login" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 border-gray-200 md:py-4 md:text-lg md:px-10 transition-all duration-200">
                         Sign in
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 
                 {/* Right side - Hero image */}
                 <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-                  <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
-                    <div className="relative block w-full bg-white rounded-lg overflow-hidden">
-                      <div className="w-full h-96 bg-gray-100 relative">
-                        {/* Replace with your actual hero image */}
-                        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                          <div className="relative w-full h-full">
-                            <Image
-                              src="/dashboard-preview.png"
-                              alt="AI Traffic Analytics Dashboard Preview"
-                              layout="fill"
-                              objectFit="cover"
-                              className="w-full"
-                              priority
-                            />
-                            {/* Fallback if image doesn't exist yet */}
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <span className="text-sm text-gray-500">Dashboard Preview</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute inset-0 rounded-lg ring-1 ring-black ring-opacity-5"></div>
+                  <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md overflow-hidden">
+                    <div className="w-full h-96 relative">
+                      <Image
+                        src="/heroimg.png"
+                        alt="AI Traffic Analytics Hero"
+                        width={800}
+                        height={600}
+                        style={{objectFit: 'cover'}}
+                        priority
+                      />
                     </div>
                   </div>
                 </div>
