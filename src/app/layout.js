@@ -6,6 +6,9 @@ export const metadata = {
   title: 'Parsley | AI Traffic Analytics',
   description: 'Track and analyze traffic from AI platforms to your website',
   metadataBase: new URL('https://www.parsley.ai'),
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
