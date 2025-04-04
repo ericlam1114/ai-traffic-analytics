@@ -9,17 +9,11 @@ import {
 } from "@/lib/supabase";
 import NavBar from "../../components/NavBar";
 import AuthGuard from "../../components/AuthGuard";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import dynamic from 'next/dynamic';
+
+// Dynamically import ApexCharts with no SSR to avoid hydration issues
+const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+
 import { 
   TrendingUp, 
   Calendar,
@@ -29,17 +23,6 @@ import {
   ArrowDown,
   Globe
 } from "lucide-react";
-
-// Register ChartJS components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 export default function Trends() {
   const { user } = useAuth();
@@ -76,40 +59,134 @@ export default function Trends() {
     }
   };
 
-  // Prepare trend chart data
-  const trendChartData = {
-    labels: trendData?.map((item) => item.date) || [],
-    datasets: [
-      {
-        label: "AI Traffic",
-        data: trendData?.map((item) => item.count) || [],
-        borderColor: "rgba(16, 163, 127, 1)",
-        backgroundColor: "rgba(16, 163, 127, 0.1)",
-        fill: true,
-        tension: 0.4,
-        pointRadius: 4,
-        pointBackgroundColor: "rgba(16, 163, 127, 1)",
-        pointBorderColor: "#fff",
-        pointBorderWidth: 2
+  // Prepare apex chart data
+  const chartSeries = [{
+    name: 'AI Traffic',
+    data: trendData?.map((item) => item.count) || []
+  }];
+
+  const chartOptions = {
+    chart: {
+      type: 'area',
+      height: 380,
+      fontFamily: 'Inter, system-ui, sans-serif',
+      toolbar: {
+        show: false
       },
-    ],
+      zoom: {
+        enabled: false
+      },
+    },
+    colors: ['#10a37f'],
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.6,
+        opacityTo: 0.1,
+        stops: [0, 90, 100],
+        colorStops: [
+          {
+            offset: 0,
+            color: '#d1f5eb',
+            opacity: 0.6
+          },
+          {
+            offset: 90,
+            color: '#d1f5eb',
+            opacity: 0.2
+          },
+          {
+            offset: 100,
+            color: '#d1f5eb',
+            opacity: 0.1
+          }
+        ]
+      }
+    },
+    xaxis: {
+      categories: trendData?.map((item) => item.date) || [],
+      labels: {
+        style: {
+          colors: '#6b7280',
+          fontSize: '11px',
+        }
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: '#6b7280',
+          fontSize: '11px',
+          fontWeight: 500
+        },
+        formatter: function(val) {
+          return val.toLocaleString();
+        }
+      }
+    },
+    grid: {
+      borderColor: '#f3f4f6',
+      strokeDashArray: 4,
+      xaxis: {
+        lines: {
+          show: false
+        }
+      }
+    },
+    tooltip: {
+      x: {
+        show: true
+      },
+      y: {
+        formatter: function(val) {
+          return val.toLocaleString() + ' visits';
+        }
+      },
+      theme: 'dark',
+      style: {
+        fontSize: '12px'
+      }
+    },
+    markers: {
+      size: 0,
+      hover: {
+        size: 5
+      }
+    }
   };
 
   const renderEmptyState = () => (
-    <div className="mt-6 text-center py-12 bg-white shadow-sm rounded-lg border border-gray-100">
+    <div className="mt-6 text-center py-12 bg-white shadow-lg rounded-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
       <div className="flex-shrink-0 mx-auto p-3 rounded-full bg-emerald-50 w-16 h-16 flex items-center justify-center mb-4">
         <Globe className="h-8 w-8 text-emerald-500" />
       </div>
       <h3 className="text-lg font-medium text-gray-900">No websites found</h3>
-      <p className="mt-2 text-sm text-gray-500">
-        Add a website to start tracking AI traffic.
+      <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">
+        Add a website to start tracking AI traffic to monitor how platforms like ChatGPT, Claude, and Perplexity interact with your content.
       </p>
       <div className="mt-6">
         <button
           type="button"
           onClick={() => router.push("/websites/add")}
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+          className="inline-flex items-center px-4 py-2 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 transform hover:translate-y-[-2px] transition-all duration-200"
         >
+          <svg className="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
           Add Your First Website
         </button>
       </div>
@@ -117,7 +194,7 @@ export default function Trends() {
   );
 
   const renderFilters = () => (
-    <div className="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100">
+    <div className="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100 hover:shadow-md transition-shadow duration-300">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="w-full sm:w-1/3">
           <label 
@@ -129,7 +206,7 @@ export default function Trends() {
           <div className="relative">
             <select
               id="filter-type"
-              className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md appearance-none"
+              className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md appearance-none shadow-sm"
               value={filterBy}
               onChange={(e) => {
                 setFilterBy(e.target.value);
@@ -159,7 +236,7 @@ export default function Trends() {
                 type="text"
                 id="specific-filter"
                 placeholder={filterBy === "source" ? "e.g., chatgpt, claude" : "e.g., /blog/post-1"}
-                className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md"
+                className="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm rounded-md shadow-sm"
                 value={specificFilter}
                 onChange={(e) => setSpecificFilter(e.target.value)}
               />
@@ -176,8 +253,9 @@ export default function Trends() {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="p-6 flex justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500"></div>
+        <div className="p-6 flex flex-col items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500 mb-4"></div>
+          <p className="text-sm text-gray-500">Loading trend data...</p>
         </div>
       );
     }
@@ -191,14 +269,17 @@ export default function Trends() {
           <h3 className="text-lg font-medium text-gray-900">
             No trend data available
           </h3>
-          <p className="mt-2 text-sm text-gray-500">
-            Once AI platforms start citing your website, trend data will appear here.
+          <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">
+            Once AI platforms start citing your website, trend data will appear here. Check back soon or add more websites to increase visibility.
           </p>
           <div className="mt-6">
             <a
               href="/websites"
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+              className="inline-flex items-center px-4 py-2 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 transform hover:translate-y-[-2px] transition-all duration-200"
             >
+              <svg className="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
               Get Your Tracking Script
             </a>
           </div>
@@ -222,7 +303,7 @@ export default function Trends() {
     return (
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow duration-300 hover:translate-y-[-2px] transition-transform duration-200">
             <div className="flex items-center">
               <div className="flex-shrink-0 p-3 rounded-lg bg-emerald-50">
                 <TrendingUp className="h-6 w-6 text-emerald-500" />
@@ -244,7 +325,7 @@ export default function Trends() {
             <p className="mt-2 text-sm text-gray-500">Since beginning of period</p>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow duration-300 hover:translate-y-[-2px] transition-transform duration-200">
             <div className="flex items-center">
               <div className="flex-shrink-0 p-3 rounded-lg bg-blue-50">
                 <Calendar className="h-6 w-6 text-blue-500" />
@@ -254,10 +335,12 @@ export default function Trends() {
                 <p className="mt-1 text-3xl font-semibold text-gray-900">{peakDay.date !== 'N/A' ? peakDay.date : 'N/A'}</p>
               </div>
             </div>
-            <p className="mt-2 text-sm text-gray-500">{peakDay.count} visits</p>
+            <p className="mt-2 text-sm text-gray-500 flex items-center">
+              <span className="font-medium text-blue-600 mr-1">{peakDay.count}</span> visits
+            </p>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow duration-300 hover:translate-y-[-2px] transition-transform duration-200">
             <div className="flex items-center">
               <div className="flex-shrink-0 p-3 rounded-lg bg-purple-50">
                 <TrendingUp className="h-6 w-6 text-purple-500" />
@@ -271,7 +354,7 @@ export default function Trends() {
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 mb-6 hover:shadow-md transition-shadow duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-medium text-gray-900">
               AI Traffic Trends 
@@ -280,55 +363,17 @@ export default function Trends() {
             </h3>
           </div>
           <div className="h-96">
-            <Line
-              data={trendChartData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false
-                  },
-                  tooltip: {
-                    backgroundColor: 'rgba(17, 24, 39, 0.9)',
-                    padding: 12,
-                    titleFont: {
-                      size: 14,
-                      weight: 'bold'
-                    },
-                    bodyFont: {
-                      size: 13
-                    }
-                  }
-                },
-                scales: {
-                  x: {
-                    grid: {
-                      display: false
-                    },
-                    ticks: {
-                      font: {
-                        size: 11
-                      }
-                    }
-                  },
-                  y: {
-                    beginAtZero: true,
-                    grid: {
-                      color: 'rgba(243, 244, 246, 1)'
-                    },
-                    ticks: {
-                      font: {
-                        size: 11
-                      },
-                      callback: function(value) {
-                        return value.toLocaleString();
-                      }
-                    }
-                  }
-                }
-              }}
-            />
+            {/* Render the ApexCharts component */}
+            <div className="h-full w-full">
+              {typeof window !== 'undefined' && (
+                <ReactApexChart 
+                  options={chartOptions} 
+                  series={chartSeries} 
+                  type="area" 
+                  height="100%" 
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
